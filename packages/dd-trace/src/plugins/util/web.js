@@ -8,6 +8,7 @@ const tags = require('../../../../../ext/tags')
 const types = require('../../../../../ext/types')
 const kinds = require('../../../../../ext/kinds')
 const urlFilter = require('./urlfilter')
+const url = require('url')
 
 const WEB = types.WEB
 const SERVER = kinds.SERVER
@@ -345,6 +346,8 @@ function addResponseTags (req) {
 
   if (req._datadog.paths.length > 0) {
     span.setTag(HTTP_ROUTE, req._datadog.paths.join(''))
+  } else {
+    span.setTag(HTTP_ROUTE, url.parse(req.url).pathname)
   }
 
   span.addTags({
